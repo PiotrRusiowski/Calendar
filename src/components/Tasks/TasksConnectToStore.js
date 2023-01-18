@@ -1,11 +1,15 @@
 import { connect } from "react-redux";
-import TasksContainer from "./TasksContainer";
+import Tasks from "./Tasks";
+import { fetchTasks } from "../../Action";
 
 const mapStateToProps = (state) => {
   return {
     tasks: state.tasks,
   };
 };
+const mapDispatchToProps = { fetchTasks };
 
-export const TasksContainerConnectToStore =
-  connect(mapStateToProps)(TasksContainer);
+export const TasksConnectToStore = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Tasks);

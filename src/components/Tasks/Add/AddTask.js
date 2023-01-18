@@ -1,21 +1,12 @@
 import React, { useEffect, useState } from "react";
-import Text from "../Inputs/Text";
-import { useInput } from "../../hooks/useInput";
-import useRestApi from "../../hooks/useRestApi";
-const AddTask = () => {
-  const api = useRestApi();
-
-  const {
-    value: title,
-    touched: touchedTitle,
-    bind: bindTitle,
-    reset: resetTitle,
-  } = useInput("");
+import Text from "../../Inputs/Text";
+import { useInput } from "../../../hooks/useInput";
+const AddTask = (props) => {
+  const { value: title, touched: touchedTitle, bind: bindTitle } = useInput("");
   const {
     value: description,
     touched: touchedDescription,
     bind: bindDescription,
-    reset: resetSurName,
   } = useInput("");
   const [error, setError] = useState({
     title: false,
@@ -34,12 +25,11 @@ const AddTask = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     const task = {
-      id: 9,
       title,
       content: description,
     };
-    // const addProduct = async () => console.log(await add(task));
-    // addProduct();
+
+    props.createTask(task);
   };
   const isValid = () => Object.values(error).every((el) => el);
   return (

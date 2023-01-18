@@ -1,23 +1,21 @@
 import React, { useEffect } from "react";
-import Tasks from "./Tasks";
+import TaskItem from "./TaskItem";
+import useRestAPI from "../../hooks/useRestApi";
 
-const ProductsContainer = (props) => {
-  // useEffect(() => {
-  //         fetch('http://localhost:8080/products')
-  //             .then(response => response.json())
-  //             // Wlasnie tutaj wywolalem akcje fetchProducts
-  //             // Zauwaz ze odwolalem sie do niej z poziomu props
-  //             .then(products => props.fetchProducts(products))
-  //     }, []
-  // )
-
-  // Znowu poprzez props odwoluje sie tym razem do products
-  // i to bedzie ten fragment stanu, ktory produkty
+const Tasks = (props) => {
+  const { getAll } = useRestAPI();
+  useEffect(() => {
+    props.fetchTasks([]);
+    getAll().then((tasks) => props.fetchTasks(tasks.data));
+  }, []);
+  console.log(props.tasks);
   return (
-    <div className="col-6 offset-3">
-      <Tasks tasks={props.tasks} />
-    </div>
+    <ul className="list-unstyled">
+      {props.tasks.map(({ id, attributes }) => (
+        <TaskItem key={id} title={attributes.title} />
+      ))}
+    </ul>
   );
 };
 
-export default ProductsContainer;
+export default Tasks;
