@@ -9,24 +9,34 @@ import { Menu, Transition } from "@headlessui/react";
 import { Fragment } from "react";
 import dayjs from "dayjs";
 
-export default function Example() {
+const Calendar = () => {
   dayjs.locale("pl");
-
-  const nowDate = dayjs().daysInMonth();
+  const year = dayjs().year();
+  const month = dayjs().month();
+  const daysInMonth = dayjs().daysInMonth();
   const lastDayMonth = dayjs().endOf("month").endOf("week");
-  const firstDayOfMonth = dayjs().startOf("month").startOf("week");
-  const daysDiff = lastDayMonth.diff(firstDayOfMonth, "days");
+  const firstDayOfMonth = dayjs().startOf("month").day(-1);
+  const firstDayOfMonth2 = dayjs(new Date(2023, 1, 0))
+    .startOf("month")
+    .startOf("week")
+    .day();
+  const firstDayOfMonthhh = dayjs(new Date(2023, 0));
 
-  console.log("test", nowDate);
-  console.log("first", firstDayOfMonth.day());
-  console.log("last", Number(lastDayMonth));
+  const daysDiff = lastDayMonth.diff(firstDayOfMonth, "days");
+  console.log(new Date(year, month, 0));
+  ///weekday
+  console.log("firstDayOfMonthhh", firstDayOfMonthhh);
+  console.log("firstDayOfMonth", firstDayOfMonth2);
+  console.log("lastDayMonth", lastDayMonth.day());
   // const monthDays = () =>
   //   new Array(+lastDayMonth).fill(0).map((_, idx) => dayjs().date(idx + 1));
   //console.log(monthDays());
-  for (let i = 0; i <= daysDiff; i++) {
-    console.log("ttt", firstDayOfMonth.add(i, "days").format());
-  }
+  let daysCounter = -6 + firstDayOfMonth;
+  // const daysMonthMatrix = new Array(6)
+  //   .fill(0)
+  //   .map((el) => (el = new Array(7).fill(0).map((el) => ()));
   ///////
+  console.log(daysMonthMatrix);
   const meetings = [
     {
       id: 1,
@@ -234,7 +244,7 @@ export default function Example() {
                       <Menu.Item>
                         {({ active }) => (
                           <a
-                            href="#"
+                            href="src/components/Tasks/Calendars/Calendar#"
                             className={classNames(
                               active
                                 ? "bg-gray-100 text-gray-900"
@@ -249,7 +259,7 @@ export default function Example() {
                       <Menu.Item>
                         {({ active }) => (
                           <a
-                            href="#"
+                            href="src/components/Tasks/Calendars/Calendar#"
                             className={classNames(
                               active
                                 ? "bg-gray-100 text-gray-900"
@@ -271,4 +281,5 @@ export default function Example() {
       </div>
     </div>
   );
-}
+};
+export default Calendar;
