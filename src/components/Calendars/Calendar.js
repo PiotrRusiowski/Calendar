@@ -8,35 +8,28 @@ import {
 import { Menu, Transition } from "@headlessui/react";
 import { Fragment } from "react";
 import dayjs from "dayjs";
+import "dayjs/locale/pl";
+import isToday from "dayjs/plugin/isToday";
 
 const Calendar = () => {
   dayjs.locale("pl");
-  const year = dayjs().year();
+  dayjs.extend(isToday);
   const month = dayjs().month();
-  const daysInMonth = dayjs().daysInMonth();
-  const lastDayMonth = dayjs().endOf("month").endOf("week");
-  const firstDayOfMonth = dayjs().startOf("month").day(-1);
-  const firstDayOfMonth2 = dayjs(new Date(2023, 1, 0))
-    .startOf("month")
-    .startOf("week")
-    .day();
-  const firstDayOfMonthhh = dayjs(new Date(2023, 0));
+  const year = dayjs().year();
 
-  const daysDiff = lastDayMonth.diff(firstDayOfMonth, "days");
-  console.log(new Date(year, month, 0));
-  ///weekday
-  console.log("firstDayOfMonthhh", firstDayOfMonthhh);
-  console.log("firstDayOfMonth", firstDayOfMonth2);
-  console.log("lastDayMonth", lastDayMonth.day());
-  // const monthDays = () =>
-  //   new Array(+lastDayMonth).fill(0).map((_, idx) => dayjs().date(idx + 1));
-  //console.log(monthDays());
-  let daysCounter = -6 + firstDayOfMonth;
-  // const daysMonthMatrix = new Array(6)
-  //   .fill(0)
-  //   .map((el) => (el = new Array(7).fill(0).map((el) => ()));
-  ///////
-  console.log(daysMonthMatrix);
+  const firstDayOfMonth = dayjs(new Date(year, 0, 0)).day();
+  let currentMonthCount = 0 - firstDayOfMonth;
+
+  const days = new Array(42).fill(0).map(() => {
+    currentMonthCount++;
+    return {
+      date: dayjs(new Date(year, 0, currentMonthCount)).format("YYYY-MM-DD"),
+      isCurrentMonth: false,
+      isSelected: false,
+    };
+  });
+  console.log(dayjs("2023-01-01").isSame(days[13].date, "month"));
+
   const meetings = [
     {
       id: 1,
@@ -49,50 +42,6 @@ const Calendar = () => {
       location: "Starbucks",
     },
     // More meetings...
-  ];
-  const days = [
-    { date: "2021-12-27" },
-    { date: "2021-12-28" },
-    { date: "2021-12-29" },
-    { date: "2021-12-30" },
-    { date: "2021-12-31" },
-    { date: "2022-01-01", isCurrentMonth: true },
-    { date: "2022-01-02", isCurrentMonth: true },
-    { date: "2022-01-03", isCurrentMonth: true },
-    { date: "2022-01-04", isCurrentMonth: true },
-    { date: "2022-01-05", isCurrentMonth: true },
-    { date: "2022-01-06", isCurrentMonth: true },
-    { date: "2022-01-07", isCurrentMonth: true },
-    { date: "2022-01-08", isCurrentMonth: true },
-    { date: "2022-01-09", isCurrentMonth: true },
-    { date: "2022-01-10", isCurrentMonth: true },
-    { date: "2022-01-11", isCurrentMonth: true },
-    { date: "2022-01-12", isCurrentMonth: true, isToday: true },
-    { date: "2022-01-13", isCurrentMonth: true },
-    { date: "2022-01-14", isCurrentMonth: true },
-    { date: "2022-01-15", isCurrentMonth: true },
-    { date: "2022-01-16", isCurrentMonth: true },
-    { date: "2022-01-17", isCurrentMonth: true },
-    { date: "2022-01-18", isCurrentMonth: true },
-    { date: "2022-01-19", isCurrentMonth: true },
-    { date: "2022-01-20", isCurrentMonth: true },
-    { date: "2022-01-21", isCurrentMonth: true },
-    { date: "2022-01-22", isCurrentMonth: true, isSelected: true },
-    { date: "2022-01-23", isCurrentMonth: true },
-    { date: "2022-01-24", isCurrentMonth: true },
-    { date: "2022-01-25", isCurrentMonth: true },
-    { date: "2022-01-26", isCurrentMonth: true },
-    { date: "2022-01-27", isCurrentMonth: true },
-    { date: "2022-01-28", isCurrentMonth: true },
-    { date: "2022-01-29", isCurrentMonth: true },
-    { date: "2022-01-30", isCurrentMonth: true },
-    { date: "2022-01-31", isCurrentMonth: true },
-    { date: "2022-02-01" },
-    { date: "2022-02-02" },
-    { date: "2022-02-03" },
-    { date: "2022-02-04" },
-    { date: "2022-02-05" },
-    { date: "2022-02-06" },
   ];
 
   function classNames(...classes) {
@@ -136,18 +85,21 @@ const Calendar = () => {
                 type="button"
                 className={classNames(
                   "py-1.5 hover:bg-gray-100 focus:z-10",
-                  day.isCurrentMonth ? "bg-white" : "bg-gray-50",
-                  (day.isSelected || day.isToday) && "font-semibold",
+                  dayjs().isSame(day.date, "month") ? "bg-white" : "bg-gray-50",
+                  (day.isSelected || dayjs(day.date).isToday()) &&
+                    "font-semibold",
                   day.isSelected && "text-white",
                   !day.isSelected &&
-                    day.isCurrentMonth &&
-                    !day.isToday &&
+                    dayjs().isSame(day.date, "month") &&
+                    !dayjs(day.date).isToday() &&
                     "text-gray-900",
                   !day.isSelected &&
-                    !day.isCurrentMonth &&
-                    !day.isToday &&
+                    !dayjs().isSame(day.date, "month") &&
+                    !dayjs(day.date).isToday() &&
                     "text-gray-400",
-                  day.isToday && !day.isSelected && "text-indigo-600",
+                  dayjs(day.date).isToday() &&
+                    !day.isSelected &&
+                    "text-indigo-600",
                   dayIdx === 0 && "rounded-tl-lg",
                   dayIdx === 6 && "rounded-tr-lg",
                   dayIdx === days.length - 7 && "rounded-bl-lg",
@@ -158,8 +110,12 @@ const Calendar = () => {
                   dateTime={day.date}
                   className={classNames(
                     "mx-auto flex h-7 w-7 items-center justify-center rounded-full",
-                    day.isSelected && day.isToday && "bg-indigo-600",
-                    day.isSelected && !day.isToday && "bg-gray-900"
+                    day.isSelected &&
+                      dayjs(day.date).isToday() &&
+                      "bg-indigo-600",
+                    day.isSelected &&
+                      !dayjs(day.date).isToday() &&
+                      "bg-gray-900"
                   )}
                 >
                   {day.date.split("-").pop().replace(/^0/, "")}
@@ -244,7 +200,7 @@ const Calendar = () => {
                       <Menu.Item>
                         {({ active }) => (
                           <a
-                            href="src/components/Tasks/Calendars/Calendar#"
+                            href="src/components/Calendars/Calendar#"
                             className={classNames(
                               active
                                 ? "bg-gray-100 text-gray-900"
@@ -259,7 +215,7 @@ const Calendar = () => {
                       <Menu.Item>
                         {({ active }) => (
                           <a
-                            href="src/components/Tasks/Calendars/Calendar#"
+                            href="src/components/Calendars/Calendar#"
                             className={classNames(
                               active
                                 ? "bg-gray-100 text-gray-900"
