@@ -6,25 +6,27 @@ import {
   MapPinIcon,
 } from "@heroicons/react/20/solid";
 import { Menu, Transition } from "@headlessui/react";
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import dayjs from "dayjs";
 import "dayjs/locale/pl";
 import isToday from "dayjs/plugin/isToday";
 
 const Calendar = () => {
-  dayjs.locale("pl");
+  //dayjs.locale("pl");
+  const [actuallyDate, setActuallyDate] = useState(dayjs());
+  const [lastDayOfTheMonth, setLastDayOfTheMonth] = useState(
+    dayjs(new Date(dayjs().year(), dayjs().month(), 0))
+  );
   dayjs.extend(isToday);
-  const month = dayjs().month();
-  const year = dayjs().year();
 
-  const firstDayOfMonth = dayjs(new Date(year, 0, 0)).day();
-  let currentMonthCount = 0 - firstDayOfMonth;
+  console.log(actuallyDate);
+  console.log(actuallyDate.add(1, "month"));
+  let currentMonthCount = 0 - dayjs(lastDayOfTheMonth.day());
 
   const days = new Array(42).fill(0).map(() => {
     currentMonthCount++;
     return {
-      date: dayjs(new Date(year, 0, currentMonthCount)).format("YYYY-MM-DD"),
-      isCurrentMonth: false,
+      date: dayjs(new Date(2023, 0, currentMonthCount)).format("YYYY-MM-DD"),
       isSelected: false,
     };
   });
@@ -43,10 +45,12 @@ const Calendar = () => {
     },
     // More meetings...
   ];
+  const useCalendarsServiceSubtract = () => {
+    console.log(actuallyDate.month(), actuallyDate.year());
+    return setActuallyDate(actuallyDate.subtract(1, "month"));
+  };
+  const classNames = (...classes) => classes.filter(Boolean).join(" ");
 
-  function classNames(...classes) {
-    return classes.filter(Boolean).join(" ");
-  }
   return (
     <div>
       <h2 className="text-lg font-semibold text-gray-900">Upcoming meetings</h2>
@@ -54,13 +58,16 @@ const Calendar = () => {
         <div className="mt-10 text-center lg:col-start-8 lg:col-end-13 lg:row-start-1 lg:mt-9 xl:col-start-9">
           <div className="flex items-center text-gray-900">
             <button
+              onClick={useCalendarsServiceSubtract}
               type="button"
               className="-m-1.5 flex flex-none items-center justify-center p-1.5 text-gray-400 hover:text-gray-500"
             >
               <span className="sr-only">Previous month</span>
               <ChevronLeftIcon className="h-5 w-5" aria-hidden="true" />
             </button>
-            <div className="flex-auto font-semibold">January</div>
+            <div className="flex-auto font-semibold">
+              {actuallyDate.format("MMMM")}
+            </div>
             <button
               type="button"
               className="-m-1.5 flex flex-none items-center justify-center p-1.5 text-gray-400 hover:text-gray-500"
