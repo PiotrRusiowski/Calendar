@@ -5,18 +5,35 @@ import DatePicker from "../../Inputs/DatePicker";
 import useMonthCounter from "../../../hooks/useMonthCounter";
 const AddTask = (props) => {
   const [currentDate] = useMonthCounter();
-  const { value: title, touched: touchedTitle, bind: bindTitle } = useInput("");
+  const {
+    value: title,
+    touched: touchedTitle,
+    bind: bindTitle,
+  } = useInput({ type: "text", placeholder: "Title" });
+
   const {
     value: description,
     touched: touchedDescription,
     bind: bindDescription,
-  } = useInput("");
-  const { value: startDate, bind: bindStartDate } = useInput(
-    currentDate.format("YYYY-MM-DD")
-  );
-  const { value: endDate, bind: bindEndDate } = useInput(
-    currentDate.format("YYYY-MM-DD")
-  );
+  } = useInput({ type: "text", placeholder: "Description" });
+
+  const { value: startDate, bind: bindStartDate } = useInput({
+    initialValue: currentDate.format("YYYY-MM-DD"),
+    id: "start-date",
+    type: "date",
+  });
+
+  const { value: endDate, bind: bindEndDate } = useInput({
+    initialValue: currentDate.format("YYYY-MM-DD"),
+    id: "end-date",
+    type: "date",
+  });
+
+  const { value: startTime, bind: bindStartTime } = useInput({
+    initialValue: "20:12",
+    id: "start-time",
+    type: "time",
+  });
 
   const [error, setError] = useState({
     title: false,
@@ -45,20 +62,42 @@ const AddTask = (props) => {
   return (
     <div>
       <form className="bg-white p-6 rounded-lg" onSubmit={handleSubmit}>
-        <Text
+        {/*<Text*/}
+        {/*  touchedFirstTime={touchedTitle}*/}
+        {/*  bind={bindTitle}*/}
+        {/*  error={error.title}*/}
+        {/*/>*/}
+        {/*<Text*/}
+        {/*  touchedFirstTime={touchedDescription}*/}
+        {/*  bind={bindDescription}*/}
+        {/*  error={error.description}*/}
+        {/*/>*/}
+        <DatePicker bind={bindStartDate} />
+        <DatePicker bind={bindEndDate} />
+        <DatePicker bind={bindStartTime} />
+        <DatePicker
+          bind={bindDescription}
+          error={error.description}
+          touchedFirstTime={touchedDescription}
+        />
+        <DatePicker
           touchedFirstTime={touchedTitle}
           bind={bindTitle}
           error={error.title}
-          placeholder={"Add task"}
         />
-        <Text
-          placeholder={"description"}
-          touchedFirstTime={touchedDescription}
-          bind={bindDescription}
-          error={error.description}
-        />
-        <DatePicker bind={bindStartDate} />
-        <DatePicker bind={bindStartDate} />
+        {/*<div className="flex flex-col mt-4">*/}
+        {/*  <label htmlFor="time" className="text-sm font-medium">*/}
+        {/*    Time:*/}
+        {/*  </label>*/}
+        {/*  <input*/}
+        {/*    type="time"*/}
+        {/*    id="time"*/}
+        {/*    className="border border-gray-400 p-2 rounded"*/}
+        {/*    // value={selectedTime}*/}
+        {/*    // onChange={(e) => setSelectedTime(e.target.value)}*/}
+        {/*  />*/}
+        {/*</div>*/}
+
         <button
           className="bg-blue-500 text-white mt-4 p-2 rounded hover:bg-blue-400"
           disabled={!isValid()}

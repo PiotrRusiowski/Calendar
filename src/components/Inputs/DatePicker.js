@@ -1,17 +1,31 @@
-import React from "react";
+import React, { useState } from "react";
 
-const DatePicker = ({ bind }) => {
+const DatePicker = ({ bind, error, touchedFirstTime, label }) => {
+  const [validate, setValidate] = useState(false);
   return (
     <div className="flex flex-col mt-4">
-      <label htmlFor="end-date" className="text-sm font-medium">
-        End Date:
-      </label>
+      {label && (
+        <label htmlFor="end-date" className="text-sm font-medium">
+          {`${bind.label}:`}
+        </label>
+      )}
+
       <input
-        type="date"
-        id="end-date"
         className="border border-gray-400 p-2 w-full placeholder-gray-600"
         {...bind}
+        onBlur={() => setValidate(true)}
       />
+
+      <div>
+        {validate
+          ? !error &&
+            touchedFirstTime && (
+              <>
+                <label className="text-danger">First name error</label>
+              </>
+            )
+          : ""}
+      </div>
     </div>
   );
 };
