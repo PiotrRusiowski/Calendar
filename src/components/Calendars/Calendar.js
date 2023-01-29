@@ -6,7 +6,6 @@ import CalendarView from "../../views/CalendarView";
 
 const Calendar = () => {
   dayjs.extend(isToday);
-  useMonthCounter();
   const [currentDate, addMonth, subtractMonth] = useMonthCounter();
   let currentMonthCount = -dayjs(
     new Date(currentDate.year(), currentDate.month(), 0)

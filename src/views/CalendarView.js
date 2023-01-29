@@ -8,6 +8,8 @@ import {
 } from "@heroicons/react/20/solid";
 import dayjs from "dayjs";
 import { Menu, Transition } from "@headlessui/react";
+import { Link } from "react-router-dom";
+import { routes } from "../routing/routes";
 
 const CalendarView = ({
   subtractMonth,
@@ -118,12 +120,14 @@ const CalendarView = ({
                 </button>
               ))}
             </div>
-            <button
-              type="button"
-              className="mt-8 w-full rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-            >
-              Add event
-            </button>
+            <Link to={routes.addTask}>
+              <button
+                type="button"
+                className="mt-8 w-full rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+              >
+                Add event
+              </button>
+            </Link>
           </div>
           <ol className="mt-4 divide-y divide-gray-100 text-sm leading-6 lg:col-span-7 xl:col-span-8">
             {meetings.map((meeting) => (

@@ -8,7 +8,6 @@ const Tasks = (props) => {
     props.fetchTasks([]);
     getAll().then((tasks) => props.fetchTasks(tasks.data));
   }, []);
-  console.log(props.tasks);
   return (
     <ul className="list-unstyled">
       {props.tasks.map(({ id, attributes }) => (

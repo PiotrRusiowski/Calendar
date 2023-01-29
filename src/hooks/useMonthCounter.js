@@ -4,13 +4,13 @@ import dayjs from "dayjs";
 function useMonthCounter() {
   const [currentDate, setDate] = useState(dayjs());
 
-  function addMonth() {
+  const addMonth = () => {
     setDate(currentDate.add(1, "month"));
-  }
+  };
 
-  function subtractMonth() {
+  const subtractMonth = () => {
     setDate(currentDate.subtract(1, "month"));
-  }
+  };
 
   return [currentDate, addMonth, subtractMonth];
 }
