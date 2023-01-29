@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 
-const DatePicker = ({ bind, error, touchedFirstTime, label }) => {
+const Input = ({ bind, error, touchedFirstTime, label }) => {
   const [validate, setValidate] = useState(false);
   return (
     <div className="flex flex-col mt-4">
       {label && (
         <label htmlFor="end-date" className="text-sm font-medium">
-          {`${bind.label}:`}
+          {`${label}:`}
         </label>
       )}
 
@@ -30,4 +30,4 @@ const DatePicker = ({ bind, error, touchedFirstTime, label }) => {
   );
 };
 
-export default DatePicker;
+export default Input;

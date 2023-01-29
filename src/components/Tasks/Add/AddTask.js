@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
-import Text from "../../Inputs/Text";
 import { useInput } from "../../../hooks/useInput";
-import DatePicker from "../../Inputs/DatePicker";
+import Input from "../../Inputs/Input";
 import useMonthCounter from "../../../hooks/useMonthCounter";
 const AddTask = (props) => {
   const [currentDate] = useMonthCounter();
@@ -34,6 +33,11 @@ const AddTask = (props) => {
     id: "start-time",
     type: "time",
   });
+  const { value: endTime, bind: bindEndTime } = useInput({
+    initialValue: "20:12",
+    id: "start-time",
+    type: "time",
+  });
 
   const [error, setError] = useState({
     title: false,
@@ -62,41 +66,24 @@ const AddTask = (props) => {
   return (
     <div>
       <form className="bg-white p-6 rounded-lg" onSubmit={handleSubmit}>
-        {/*<Text*/}
-        {/*  touchedFirstTime={touchedTitle}*/}
-        {/*  bind={bindTitle}*/}
-        {/*  error={error.title}*/}
-        {/*/>*/}
-        {/*<Text*/}
-        {/*  touchedFirstTime={touchedDescription}*/}
-        {/*  bind={bindDescription}*/}
-        {/*  error={error.description}*/}
-        {/*/>*/}
-        <DatePicker bind={bindStartDate} />
-        <DatePicker bind={bindEndDate} />
-        <DatePicker bind={bindStartTime} />
-        <DatePicker
-          bind={bindDescription}
-          error={error.description}
-          touchedFirstTime={touchedDescription}
-        />
-        <DatePicker
+        <Input
           touchedFirstTime={touchedTitle}
           bind={bindTitle}
           error={error.title}
         />
-        {/*<div className="flex flex-col mt-4">*/}
-        {/*  <label htmlFor="time" className="text-sm font-medium">*/}
-        {/*    Time:*/}
-        {/*  </label>*/}
-        {/*  <input*/}
-        {/*    type="time"*/}
-        {/*    id="time"*/}
-        {/*    className="border border-gray-400 p-2 rounded"*/}
-        {/*    // value={selectedTime}*/}
-        {/*    // onChange={(e) => setSelectedTime(e.target.value)}*/}
-        {/*  />*/}
-        {/*</div>*/}
+        <Input
+          bind={bindDescription}
+          error={error.description}
+          touchedFirstTime={touchedDescription}
+        />
+        <div className={"flex flex-row items-end"}>
+          <Input bind={bindStartDate} label={"Start date"} />
+          <Input bind={bindStartTime} />
+        </div>
+        <div className={"flex flex-row items-end"}>
+          <Input bind={bindEndDate} label={"End date"} />
+          <Input bind={bindEndTime} />
+        </div>
 
         <button
           className="bg-blue-500 text-white mt-4 p-2 rounded hover:bg-blue-400"
