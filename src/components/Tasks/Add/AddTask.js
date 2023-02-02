@@ -2,19 +2,20 @@ import React, { useEffect, useState } from "react";
 import { useInput } from "../../../hooks/useInput";
 import Input from "../../Inputs/Input";
 import useMonthCounter from "../../../hooks/useMonthCounter";
+import dayjs from "dayjs";
 const AddTask = (props) => {
   const [currentDate] = useMonthCounter();
   const {
     value: title,
     touched: touchedTitle,
     bind: bindTitle,
-  } = useInput({ type: "text", placeholder: "Title" });
+  } = useInput({ type: "text", placeholder: "Title..." });
 
   const {
     value: description,
     touched: touchedDescription,
     bind: bindDescription,
-  } = useInput({ type: "text", placeholder: "Description" });
+  } = useInput({ type: "text", placeholder: "Description..." });
 
   const { value: startDate, bind: bindStartDate } = useInput({
     initialValue: currentDate.format("YYYY-MM-DD"),
@@ -29,12 +30,12 @@ const AddTask = (props) => {
   });
 
   const { value: startTime, bind: bindStartTime } = useInput({
-    initialValue: "20:12",
+    initialValue: dayjs().format("HH:mm"),
     id: "start-time",
     type: "time",
   });
   const { value: endTime, bind: bindEndTime } = useInput({
-    initialValue: "20:12",
+    initialValue: dayjs().format("HH:mm"),
     id: "start-time",
     type: "time",
   });
@@ -52,14 +53,15 @@ const AddTask = (props) => {
       });
     };
   }, [title, description]);
-  const validateTextInput = (value) => value.length > 4;
+  const validateTextInput = (value) => value.length > 3;
   const handleSubmit = (event) => {
     event.preventDefault();
     const task = {
       title,
       content: description,
+      startDate: `${startDate} ${startTime}`,
+      endDate: `${endDate} ${endTime}`,
     };
-
     props.createTask(task);
   };
   const isValid = () => Object.values(error).every((el) => el);
@@ -71,11 +73,7 @@ const AddTask = (props) => {
           bind={bindTitle}
           error={error.title}
         />
-        <Input
-          bind={bindDescription}
-          error={error.description}
-          touchedFirstTime={touchedDescription}
-        />
+        <Input bind={bindDescription} />
         <div className={"flex flex-row items-end"}>
           <Input bind={bindStartDate} label={"Start date"} />
           <Input bind={bindStartTime} />

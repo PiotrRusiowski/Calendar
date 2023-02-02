@@ -18,8 +18,8 @@
     "content": {
       "type": "string"
     },
-    "data": {
-      "type": "date"
+    "startDate": {
+      "type": "datetime"
     }
   }
 }
